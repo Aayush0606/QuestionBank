@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 export default function LoginComopnent() {
   document.title = `Login`;
@@ -41,6 +42,11 @@ export default function LoginComopnent() {
                 placeholder="Password"
               />
             </Form.Group>
+            <div className="text-end mb-2">
+              <Form.Text className="text-muted">
+                New here? <Link to="signup">SignUp</Link>
+              </Form.Text>
+            </div>
             <div className="text-center">
               <Button variant="primary" type="submit">
                 Submit

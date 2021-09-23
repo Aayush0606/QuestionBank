@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 export default function SignupComponent() {
   document.title = `SignUp`;
@@ -14,7 +15,7 @@ export default function SignupComponent() {
 
   return (
     <>
-      <div className="auth-wrapper">
+      <div className="auth-wrapper" style={{ marginTop: "5em" }}>
         <div className="auth-inner">
           <h3>SignIn</h3>
           <Form onSubmit={handleSubmit}>
@@ -67,6 +68,11 @@ export default function SignupComponent() {
                 placeholder="Password"
               />
             </Form.Group>
+            <div className="text-end mb-2">
+              <Form.Text className="text-muted">
+                Already registered? <Link to="login">Login</Link>
+              </Form.Text>
+            </div>
             <div className="text-center">
               <Button variant="primary" type="submit">
                 Submit
