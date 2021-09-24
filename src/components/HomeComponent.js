@@ -35,8 +35,12 @@ export default function HomeComponent() {
   ];
 
   useEffect(() => {
-    dispatch(quesList(arr));
+    setQuesList();
   }, [arr]);
+
+  const setQuesList = async () => {
+    dispatch(quesList({ arr }));
+  };
 
   return (
     <Container>

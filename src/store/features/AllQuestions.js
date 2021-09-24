@@ -1,15 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-  value: [],
-};
-
+const initialState = [];
+console.log(initialState);
 export const changeSlice = createSlice({
   name: "allQuestions",
   initialState,
   reducers: {
     quesList: (state, action) => {
-      state.value = action.payload;
+      state.push(action.payload);
+      return state;
     },
   },
 });
