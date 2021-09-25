@@ -10,27 +10,33 @@ export default function HomeComponent() {
   const arr = [
     {
       name: "Hello",
-      title: "this is title",
+      title: "this is title 1",
+      description: "hi",
     },
     {
       name: "Hello 2",
       title: "this is title 2",
+      description: "hi 2",
     },
     {
       name: "Hello 3",
       title: "this is title 3",
+      description: "hi 3",
     },
     {
       name: "Hello 4",
       title: "this is title 4",
+      description: "hi 4",
     },
     {
       name: "Hello 5",
       title: "this is title 5",
+      description: "hi 5",
     },
     {
       name: "Hello 2",
-      title: "this is title 5",
+      title: "this is title 6",
+      description: "hi 6",
     },
   ];
 

@@ -8,6 +8,7 @@ import About from "./components/AboutComponet";
 import AskQuestionComponent from "./components/AskQuestionComponent";
 import YourQuestionsComponet from "./components/YourQuestionsComponet";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import DiscussComponent from "./components/DiscussComponent";
 
 function App() {
   return (
@@ -19,6 +20,9 @@ function App() {
         </Route>
         <Route exact path="/ques">
           <YourQuestionsComponet />
+        </Route>
+        <Route exact path="/ques/:id">
+          <DiscussComponent />
         </Route>
         <Route exact path="/ask">
           <AskQuestionComponent />

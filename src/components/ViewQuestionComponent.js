@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Card, Button, Container, Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Card, Container, Row, Col } from "react-bootstrap";
 
-export default function QuestionCardComponent({ name, title }) {
+export default function ViewQuestionComponent({ name, title, description }) {
   const [Count, setCount] = useState(0);
 
   return (
@@ -17,20 +16,17 @@ export default function QuestionCardComponent({ name, title }) {
               <Card>
                 <Card.Header>
                   <Container className="profileContainer">
-                    <img src="./logo192.png" alt="." className="userIMG" />
+                    <img
+                      src="https://pbs.twimg.com/profile_images/446356636710363136/OYIaJ1KK.png"
+                      alt="."
+                      className="userIMG"
+                    />
                     <h4>{name}</h4>
                   </Container>
                 </Card.Header>
                 <Card.Body>
                   <Card.Title>{title}</Card.Title>
-                  <Button variant="info">
-                    <Link
-                      to={`/ques/${title}`}
-                      style={{ textDecoration: "none", color: "black" }}
-                    >
-                      Discuss
-                    </Link>
-                  </Button>
+                  <Card.Text>{description}</Card.Text>
                 </Card.Body>
               </Card>
             </Col>

@@ -1,18 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = [];
-console.log(initialState);
+const initialState = {};
 export const changeSlice = createSlice({
   name: "allQuestions",
   initialState,
   reducers: {
     quesList: (state, action) => {
-      state.push(action.payload);
-      return state;
+      const { arr } = action.payload;
+      state.values = arr;
+    },
+    askQues: (state, action) => {
+      const { arr } = action.payload;
+      state.values.push(arr);
     },
   },
 });
 
-export const { quesList } = changeSlice.actions;
+export const { quesList, askQues } = changeSlice.actions;
 
 export default changeSlice.reducer;

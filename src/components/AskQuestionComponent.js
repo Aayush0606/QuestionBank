@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import { Button, Container, Form, FloatingLabel } from "react-bootstrap";
+import { askQues } from "../store/features/AllQuestions";
+import { useDispatch } from "react-redux";
 
 export default function AskQuestionComponent() {
   const [que, setQue] = useState("");
   const [des, setDes] = useState("");
 
+  const dispatch = useDispatch();
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(que, des);
+    const arr = { name: "Hello 2", title: que, description: des };
+    dispatch(askQues({ arr }));
   };
 
   return (
