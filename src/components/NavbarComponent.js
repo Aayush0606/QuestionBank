@@ -1,8 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { Navbar, Container, Nav, NavLink } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { Auth } from "../config/firebase.config";
 
 export default function NavbarComponent() {
+  const [loading, setLoading] = useState(false);
+
+  const handleLogOut = async () => {
+    setLoading(true);
+    try {
+      await Auth.signOut();
+    } catch (error) {
+      alert("Pig");
+    }
+    setLoading(false);
+  };
+
   return (
     <div>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -24,11 +37,14 @@ export default function NavbarComponent() {
               </NavLink>
             </Nav>
             <Nav>
-              <NavLink eventKey={4} as={Link} to="/login">
-                Login
-              </NavLink>
-              <NavLink eventKey={5} as={Link} to="/signup">
-                SignUp
+              <NavLink
+                eventKey={4}
+                as={Link}
+                to="/login"
+                onClick={handleLogOut}
+                disabled={loading}
+              >
+                LogOut
               </NavLink>
             </Nav>
           </Navbar.Collapse>

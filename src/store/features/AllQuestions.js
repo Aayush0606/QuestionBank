@@ -11,7 +11,11 @@ export const changeSlice = createSlice({
     },
     askQues: (state, action) => {
       const { arr } = action.payload;
-      state.values.push(arr);
+      if (state.values) {
+        state.values.push(arr);
+      } else {
+        state.values = [arr];
+      }
     },
   },
 });

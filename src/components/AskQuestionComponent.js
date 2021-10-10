@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { Button, Container, Form, FloatingLabel } from "react-bootstrap";
 import { askQues } from "../store/features/AllQuestions";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 export default function AskQuestionComponent() {
+  document.title = "Ask Questions";
+  const history = useHistory();
   const [que, setQue] = useState("");
   const [des, setDes] = useState("");
 
@@ -13,6 +16,7 @@ export default function AskQuestionComponent() {
     e.preventDefault();
     const arr = { name: "Hello 2", title: que, description: des };
     dispatch(askQues({ arr }));
+    history.push(`/ques/${que}`);
   };
 
   return (
@@ -25,6 +29,7 @@ export default function AskQuestionComponent() {
             className="mb-3"
           >
             <Form.Control
+              required
               type="text"
               placeholder="Your question title"
               value={que}
@@ -38,6 +43,7 @@ export default function AskQuestionComponent() {
             label="Question Description"
           >
             <Form.Control
+              required
               as="textarea"
               placeholder="Question Description"
               style={{ height: "10em" }}
