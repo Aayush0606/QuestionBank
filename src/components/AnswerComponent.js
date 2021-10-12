@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Card, Container, Row, Col } from "react-bootstrap";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default function AnswerComponent({ name, description }) {
   const [Count, setCount] = useState(0);
@@ -25,7 +27,12 @@ export default function AnswerComponent({ name, description }) {
                   </Container>
                 </Card.Header>
                 <Card.Body>
-                  <Card.Text>{description}</Card.Text>
+                  <Card.Text>
+                    <ReactMarkdown
+                      children={description}
+                      remarkPlugins={[remarkGfm]}
+                    />
+                  </Card.Text>
                 </Card.Body>
               </Card>
             </Col>

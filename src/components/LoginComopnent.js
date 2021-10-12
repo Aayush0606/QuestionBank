@@ -19,7 +19,7 @@ export default function LoginComopnent() {
     setLoading(true);
     e.preventDefault();
     try {
-      const user = await Auth.signInWithEmailAndPassword(email, pass);
+      await Auth.signInWithEmailAndPassword(email, pass);
       setShowAlert(false);
       setAlertMsg("");
       history.push("/");

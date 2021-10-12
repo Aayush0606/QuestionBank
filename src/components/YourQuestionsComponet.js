@@ -1,27 +1,36 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import QuestionCardComponent from "./QuestionCardComponent";
 
 export default function YourQuestionsComponet() {
   document.title = "Your Questions";
+  const [ready, setReady] = useState(false);
   let arr = useSelector((state) => state.questionsList.values);
+  let myUser = useSelector((state) => state.UserDetails.values);
+  const [myQues, setMyQues] = useState([]);
   useEffect(() => {
     getMyQuestions();
   }, []);
 
   const getMyQuestions = async () => {
+    setReady(false);
+    let myQuesList = [];
     if (arr) {
-      arr = arr.filter((item) => item.name === "Hello 2");
+      myQuesList = arr.filter((item) => {
+        return item.uid === myUser[0].uid;
+      });
     }
-    console.log(arr);
+    setReady(true);
+    setMyQues(myQuesList);
   };
 
   return (
     <Container>
       <h1 className="text-center">Your Questions</h1>
-      {arr &&
-        arr.map((item) => (
+      {myQues &&
+        ready &&
+        myQues.map((item) => (
           <QuestionCardComponent name={item.name} title={item.title} />
         ))}
     </Container>

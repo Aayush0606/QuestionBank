@@ -10,9 +10,12 @@ import YourQuestionsComponet from "./components/YourQuestionsComponet";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import DiscussComponent from "./components/DiscussComponent";
 import { Auth } from "./config/firebase.config";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { changeLog } from "./store/features/LogCheck";
+import { quesList } from "./store/features/AllQuestions";
+import { setUser, delUser } from "./store/features/UserDetails";
 import { useEffect, useState } from "react";
+import { DataBase } from "./config/firebase.config";
 
 function App() {
   const [checkStatus, setCheckStatus] = useState(false);
@@ -21,18 +24,36 @@ function App() {
   const CheckLogStatus = async () => {
     const user = await Auth.onAuthStateChanged((user) => {
       if (user != null) {
+        const userData = {
+          name: user.displayName,
+          uid: user.uid,
+        };
         dispatch(changeLog());
+        dispatch(setUser({ userData }));
         setCheckStatus(true);
-        console.log("entered");
       } else {
+        dispatch(delUser());
         alert("Stupid pig");
         setCheckStatus(false);
       }
     });
   };
 
+  const GetQuestions = async () => {
+    let arr = [];
+    const queData = await DataBase.collectionGroup("quesData").get();
+    queData.forEach((doc) => {
+      const queList = { ...doc.data().arr };
+      if (queList.name) {
+        arr.push(queList);
+      }
+    });
+    dispatch(quesList({ arr }));
+  };
+
   useEffect(() => {
     CheckLogStatus();
+    GetQuestions();
   }, []);
 
   return (

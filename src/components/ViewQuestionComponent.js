@@ -31,7 +31,6 @@ export default function ViewQuestionComponent({ name, title, description }) {
                     <h1>{title}</h1>
                   </Card.Title>
                   <hr />
-                  {/* <Card.Text>{description}</Card.Text> */}
                   <Card.Text>
                     <ReactMarkdown
                       children={description}

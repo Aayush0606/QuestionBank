@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   Container,
@@ -10,6 +10,7 @@ import {
 import ViewQuestionComponent from "./ViewQuestionComponent";
 import { useParams } from "react-router";
 import AnswerComponent from "./AnswerComponent";
+import { DataBase } from "../config/firebase.config";
 
 export default function DiscussCpmponent() {
   const [Ans, setAns] = useState("");
@@ -17,17 +18,40 @@ export default function DiscussCpmponent() {
   const [answer, setAnswer] = useState([]);
   const { id } = useParams();
   const specific = arr.filter((item) => item.title === id);
+  let user = useSelector((state) => state.UserDetails.values);
 
   const handleClick = async (e) => {
     e.preventDefault();
+    let allAnswers = answer;
     const ansTest = {
       description: Ans,
-      name: "Potato",
-      title: "this is title 1",
+      name: user[0].name,
     };
     setAnswer(answer.concat(ansTest));
     setAns("");
+    allAnswers.push(ansTest);
+    await DataBase.collection("allQuestions")
+      .doc(specific[0].title)
+      .collection("quesData")
+      .doc("ansDetails")
+      .set({ allAnswers }, { merge: true });
   };
+
+  const getAns = async () => {
+    const url = `/allQuestions/${specific[0].title}/quesData`;
+    const answers = await DataBase.collection(url).get();
+    const req = [];
+    answers.forEach((item) => {
+      if (item.data().allAnswers) {
+        req.push(...item.data().allAnswers);
+      }
+    });
+    setAnswer(req);
+  };
+
+  useEffect(() => {
+    getAns();
+  }, []);
 
   return (
     <Container>

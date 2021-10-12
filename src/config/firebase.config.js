@@ -1,5 +1,6 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
+import "firebase/compat/firestore";
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_APIKEY,
   authDomain: process.env.REACT_APP_AUTHDOMAIN,
@@ -15,5 +16,7 @@ if (firebase.apps.length === 0) {
 }
 
 export const Auth = Firebase.auth();
+
+export const DataBase = firebase.firestore();
 
 export default Firebase;

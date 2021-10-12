@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Button, Container, Form, FloatingLabel } from "react-bootstrap";
 import { askQues } from "../store/features/AllQuestions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { DataBase } from "../config/firebase.config";
 
 export default function AskQuestionComponent() {
   document.title = "Ask Questions";
@@ -12,10 +13,22 @@ export default function AskQuestionComponent() {
 
   const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  let user = useSelector((state) => state.UserDetails.values);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const arr = { name: "Hello 2", title: que, description: des };
+    const arr = {
+      name: user[0].name,
+      title: que,
+      description: des,
+      uid: user[0].uid,
+    };
     dispatch(askQues({ arr }));
+    await DataBase.collection("allQuestions")
+      .doc(que)
+      .collection("quesData")
+      .doc("quesDetails")
+      .set({ arr }, { merge: true });
     history.push(`/ques/${que}`);
   };
 
