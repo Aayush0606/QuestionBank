@@ -1,9 +1,31 @@
 import React, { useState } from "react";
 import { Card, Button, Container, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { quesList } from "../store/features/AllQuestions";
+import { DataBase } from "../config/firebase.config";
 
-export default function QuestionCardComponent({ name, title }) {
+export default function QuestionCardComponent({ name, title, uid }) {
   const [Count, setCount] = useState(0);
+
+  const dispatch = useDispatch();
+
+  let user = useSelector((state) => state.UserDetails.values);
+
+  let arr = useSelector((state) => state.questionsList.values);
+
+  const [loading, setLoading] = useState(false);
+
+  const updateDel = async () => {
+    setLoading(true);
+    arr = arr.filter((item) => item.title !== title);
+    await DataBase.doc(`/allQuestions/${title}/quesData/ansDetails`).delete();
+    await DataBase.doc(`/allQuestions/${title}/quesData/quesDetails`).delete();
+    await DataBase.doc(`/allQuestions/${title}`).delete();
+    dispatch(quesList({ arr }));
+    setLoading(false);
+  };
 
   return (
     <>
@@ -23,7 +45,7 @@ export default function QuestionCardComponent({ name, title }) {
                 </Card.Header>
                 <Card.Body>
                   <Card.Title>{title}</Card.Title>
-                  <Button variant="info">
+                  <Button variant="info" disable={loading}>
                     <Link
                       to={`/ques/${title}`}
                       style={{ textDecoration: "none", color: "black" }}
@@ -31,12 +53,27 @@ export default function QuestionCardComponent({ name, title }) {
                       Discuss
                     </Link>
                   </Button>
+                  {uid === user[0].uid ? (
+                    <>
+                      <Button
+                        variant="danger"
+                        className="myBtns"
+                        onClick={updateDel}
+                        disable={loading}
+                      >
+                        Delete
+                      </Button>
+                    </>
+                  ) : (
+                    ""
+                  )}
                 </Card.Body>
               </Card>
             </Col>
             <Col lg={1} md={1} sm={2} xl={1} xs={3} xxl={1}>
               <Row
                 className="triangle-up"
+                style={{ borderBottom: "3em solid black" }}
                 onClick={() => {
                   setCount(Count + 1);
                 }}
@@ -46,6 +83,7 @@ export default function QuestionCardComponent({ name, title }) {
               </Row>
               <Row
                 className="triangle-down"
+                style={{ borderTop: "3em solid black" }}
                 onClick={() => {
                   setCount(Count - 1);
                 }}

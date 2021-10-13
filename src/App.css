@@ -42,14 +42,14 @@ code {
   height: 0;
   border-left: 1.5em solid transparent;
   border-right: 1.5em solid transparent;
-  border-top: 3em solid #555;
+  /* border-top: 3em solid #555; */
 }
 .triangle-up {
   width: 0;
   height: 0;
   border-left: 1.5em solid transparent;
   border-right: 1.5em solid transparent;
-  border-bottom: 3em solid #555;
+  /* border-bottom: 3em solid #555; */
 }
 
 .triangle-down:hover,
@@ -101,6 +101,11 @@ code {
   gap: 0.5em;
 }
 
+.myBtns {
+  color: black !important;
+  margin-left: 1em;
+}
+
 @media only screen and (max-width: 600px) {
   .auth-inner {
     width: 20em;
@@ -113,12 +118,25 @@ code {
     margin-top: 5em;
   }
 }
-@media only screen and (max-width: 280px) {
+/* @media only screen and (max-width: 280px) {
   .auth-inner {
     width: 15em;
   }
   .profileContainer {
     display: flex;
     flex-direction: column;
+  }
+} */
+@media only screen and (max-width: 340px) {
+  .auth-inner {
+    width: 15em;
+  }
+  .profileContainer {
+    display: flex;
+    flex-direction: column;
+  }
+  .myBtns {
+    margin-left: 0;
+    margin-top: 1em;
   }
 }

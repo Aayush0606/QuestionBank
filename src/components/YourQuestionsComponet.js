@@ -11,7 +11,7 @@ export default function YourQuestionsComponet() {
   const [myQues, setMyQues] = useState([]);
   useEffect(() => {
     getMyQuestions();
-  }, []);
+  }, [arr]);
 
   const getMyQuestions = async () => {
     setReady(false);
@@ -31,7 +31,11 @@ export default function YourQuestionsComponet() {
       {myQues &&
         ready &&
         myQues.map((item) => (
-          <QuestionCardComponent name={item.name} title={item.title} />
+          <QuestionCardComponent
+            name={item.name}
+            title={item.title}
+            uid={item.uid}
+          />
         ))}
     </Container>
   );
