@@ -23,6 +23,10 @@ export default function QuestionCardComponent({ name, title, uid }) {
     arr = arr.filter((item) => item.title !== title);
     await DataBase.doc(`/allQuestions/${title}/quesData/ansDetails`).delete();
     await DataBase.doc(`/allQuestions/${title}/quesData/quesDetails`).delete();
+    await DataBase.doc(`/allQuestions/${title}/quesData/voteCount`).delete();
+    await DataBase.doc(
+      `/allQuestions/${title}/quesData/votingDetails`
+    ).delete();
     await DataBase.doc(`/allQuestions/${title}`).delete();
     dispatch(quesList({ arr }));
     setLoading(false);
@@ -47,6 +51,23 @@ export default function QuestionCardComponent({ name, title, uid }) {
         .collection(user[0].uid)
         .doc("userVote")
         .set({ vote: "up" });
+      await DataBase.collection("allQuestions")
+        .doc(title)
+        .collection("quesData")
+        .doc("voteCount")
+        .set({ voteCount: voteCount });
+    }
+    if (voted === "up") {
+      const voteCount = Count - 1;
+      setCount(Count - 1);
+      setVoted("");
+      await DataBase.collection("allQuestions")
+        .doc(title)
+        .collection("quesData")
+        .doc("votingDetails")
+        .collection(user[0].uid)
+        .doc("userVote")
+        .set({ vote: "" });
       await DataBase.collection("allQuestions")
         .doc(title)
         .collection("quesData")
@@ -80,17 +101,34 @@ export default function QuestionCardComponent({ name, title, uid }) {
         .doc("voteCount")
         .set({ voteCount: voteCount });
     }
+    if (voted === "down") {
+      const voteCount = Count + 1;
+      setCount(Count + 1);
+      setVoted("");
+      await DataBase.collection("allQuestions")
+        .doc(title)
+        .collection("quesData")
+        .doc("votingDetails")
+        .collection(user[0].uid)
+        .doc("userVote")
+        .set({ vote: "" });
+      await DataBase.collection("allQuestions")
+        .doc(title)
+        .collection("quesData")
+        .doc("voteCount")
+        .set({ voteCount: voteCount });
+    }
   };
 
   const getVotes = async () => {
-    const xyz = `/allQuestions/${title}/quesData`;
-    const lol = await DataBase.collection(xyz).get();
-    lol.forEach((item) => {
+    let url = `/allQuestions/${title}/quesData`;
+    const voteCountDatabse = await DataBase.collection(url).get();
+    voteCountDatabse.forEach((item) => {
       if (item.data().voteCount) {
         setCount(item.data().voteCount);
       }
     });
-    const url = `/allQuestions/${title}/quesData/votingDetails/${user[0].uid}`;
+    url = `/allQuestions/${title}/quesData/votingDetails/${user[0].uid}`;
     const answers = await DataBase.collection(url).get();
     answers.forEach((item) => {
       setVoted(item.data().vote);

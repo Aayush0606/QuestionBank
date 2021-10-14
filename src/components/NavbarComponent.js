@@ -11,7 +11,7 @@ export default function NavbarComponent() {
     try {
       await Auth.signOut();
     } catch (error) {
-      alert("Pig");
+      console.log("something messed up");
     }
     setLoading(false);
   };

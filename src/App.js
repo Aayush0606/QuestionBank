@@ -33,7 +33,6 @@ function App() {
         setCheckStatus(true);
       } else {
         dispatch(delUser());
-        alert("Stupid pig");
         setCheckStatus(false);
       }
     });
