@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Button, Container, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -8,6 +8,7 @@ import { DataBase } from "../config/firebase.config";
 
 export default function QuestionCardComponent({ name, title, uid }) {
   const [Count, setCount] = useState(0);
+  const [voted, setVoted] = useState("");
 
   const dispatch = useDispatch();
 
@@ -26,6 +27,79 @@ export default function QuestionCardComponent({ name, title, uid }) {
     dispatch(quesList({ arr }));
     setLoading(false);
   };
+
+  const upVoteHandle = async () => {
+    if (voted !== "up") {
+      let voteCount;
+      if (voted) {
+        voteCount = Count + 2;
+        setCount(Count + 2);
+        setVoted("up");
+      } else {
+        voteCount = Count + 1;
+        setCount(Count + 1);
+        setVoted("up");
+      }
+      await DataBase.collection("allQuestions")
+        .doc(title)
+        .collection("quesData")
+        .doc("votingDetails")
+        .collection(user[0].uid)
+        .doc("userVote")
+        .set({ vote: "up" });
+      await DataBase.collection("allQuestions")
+        .doc(title)
+        .collection("quesData")
+        .doc("voteCount")
+        .set({ voteCount: voteCount });
+    }
+  };
+
+  const downVoteHandle = async () => {
+    if (voted !== "down") {
+      let voteCount;
+      if (voted) {
+        voteCount = Count - 2;
+        setCount(Count - 2);
+        setVoted("down");
+      } else {
+        voteCount = Count - 1;
+        setCount(Count - 1);
+        setVoted("down");
+      }
+      await DataBase.collection("allQuestions")
+        .doc(title)
+        .collection("quesData")
+        .doc("votingDetails")
+        .collection(user[0].uid)
+        .doc("userVote")
+        .set({ vote: "down" });
+      await DataBase.collection("allQuestions")
+        .doc(title)
+        .collection("quesData")
+        .doc("voteCount")
+        .set({ voteCount: voteCount });
+    }
+  };
+
+  const getVotes = async () => {
+    const xyz = `/allQuestions/${title}/quesData`;
+    const lol = await DataBase.collection(xyz).get();
+    lol.forEach((item) => {
+      if (item.data().voteCount) {
+        setCount(item.data().voteCount);
+      }
+    });
+    const url = `/allQuestions/${title}/quesData/votingDetails/${user[0].uid}`;
+    const answers = await DataBase.collection(url).get();
+    answers.forEach((item) => {
+      setVoted(item.data().vote);
+    });
+  };
+
+  useEffect(() => {
+    getVotes();
+  }, []);
 
   return (
     <>
@@ -72,21 +146,17 @@ export default function QuestionCardComponent({ name, title, uid }) {
             </Col>
             <Col lg={1} md={1} sm={2} xl={1} xs={3} xxl={1}>
               <Row
-                className="triangle-up"
-                style={{ borderBottom: "3em solid black" }}
-                onClick={() => {
-                  setCount(Count + 1);
-                }}
+                className={`triangle-up ${voted === "up" ? "upVote" : ""}`}
+                onClick={upVoteHandle}
               ></Row>
               <Row>
                 <p className="noselect">{Count}</p>
               </Row>
               <Row
-                className="triangle-down"
-                style={{ borderTop: "3em solid black" }}
-                onClick={() => {
-                  setCount(Count - 1);
-                }}
+                className={`triangle-down ${
+                  voted === "down" ? "downVote" : ""
+                }`}
+                onClick={downVoteHandle}
               ></Row>
             </Col>
           </Row>
