@@ -19,9 +19,9 @@ export default function About() {
           <h1 className="text-center">About Me</h1>
           <p className="text-center">
             Hello my name is Aayush Sharma and I created this web app as a fun
-            project while learning React. I used MERN Stack for this app
-            development and deployed it using Heroku and Netlify.Feel free to
-            contact me via social links given below.
+            project while learning React. I used React with Firebase as backend
+            for this web app development and deployed it using Netlify.Feel free
+            to contact me via social links given below.
           </p>
         </Container>
         <Container>
